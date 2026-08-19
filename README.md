@@ -68,6 +68,11 @@ Once this preliminary data is collected, the following MATLAB scripts can succes
 ### 3. Core cgFEM Analysis [Modified I2MB Scripts]
 *Note: The following core scripts were originally developed by researchers at the I2MB lab. During this project, they were significantly refactored into dynamic functions to handle patient-specific inputs and enable automated batch processing.*
 
+#### `Main_CPD_Vertebrae_Generator.m`
+* **Input:** `int` (from 1 to 12 for the vertebra to be analyzed), `string` (Path of the original .mat reference vertebra), `string` (Path of the new .mat reference vertebra)
+* **Process:** To be applied with the same patient for both inputs to change the reference vertebra. It allows to check if a vertebra is oriented in our standard coordinate system then rotate it in case. It allows to get and change the coordinates of the force nodes, rib joints and center of the surfaces manually. It allows to resize the frame defining the surface of the cartilago.
+* **Output:** `.mat` of the reference vertebra.
+* 
 #### `Tumor_FEAVox_flow_Main_CPD.m`
 * **Input:** `.mat` (Patient's specific vertebra), `Numeric Values` (Vertebra level, Tumor radius, Tumor center coordinates, and Tumor HU value)
 * **Process:** Automatically loads the corresponding healthy reference vertebra, executes the Coherent Point Drift (CPD) registration to map the new vertebra's geometry, maps the intervertebral cartilages, and converts local tumor coordinates to the global reference frame.
@@ -75,7 +80,7 @@ Once this preliminary data is collected, the following MATLAB scripts can succes
 
 #### `Tumor_FEAVox_flow_Basic.m`
 * **Input:** `Workspace Variables` (Tumor parameters and the CPD-registered vertebra structure from the previous function), `String` (File paths for outputs)
-* **Process:** Integrates the tumor into the mesh, assigns Young's Modulus values based on HU density, and executes the core cgFEM elastostatic solver (`Batch_FEAVox_Fracture_1_CC`)[cite: 3]. It calculates the 99.99th percentile of the resulting stress field to dynamically filter out numerical singularities before computing the von Mises stress.
+* **Process:** Integrates the tumor into the mesh, assigns Young's Modulus values based on HU density, and executes the core cgFEM elastostatic solver (`Batch_FEAVox_Fracture_1_CC`). It calculates the 99.99th percentile of the resulting stress field to dynamically filter out numerical singularities before computing the von Mises stress.
 * **Output:** `Workspace Array` (Nodal displacements and stress/strain arrays), `GUI Interface` (Triggers the 3D visualization tools)
 
 #### `PredictionToracic.m`
